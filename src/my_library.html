@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Filmoteka</title>
+    <title>My-library</title>
     <link rel="shortcut icon" href="./images/favicon.ico" type="image/x-icon" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -13,21 +13,22 @@
     />
     <link
       rel="stylesheet"
-      href="../node_modules/@glidejs/glide/dist/css/glide.theme.min.css"
+      href="../node_modules/@glidejs/glide/dist/css/glide.core.min.css"
     />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
     <link rel="stylesheet" href="./scss/index.scss" />
   </head>
-
   <body>
-    <include src="./partials/home-header.html"></include>
+    <include src="./partials/library-header.html"></include>
     <main>
       <include src="./partials/slider-new-films.html"></include>
-      <include src="./partials/home-section-films.html"></include>
+      <include src="./partials/library-section-films.html"></include>
+
       <include src="./partials/modal.html"></include>
     </main>
-    <include src="./partials/footer.html"></include>
-
-    <script type="module" src="./index.js"></script>
+    <footer>
+      <include src="./partials/footer.html"></include>
+    </footer>
+    <script type="module" src="./library.js"></script>
   </body>
 </html>

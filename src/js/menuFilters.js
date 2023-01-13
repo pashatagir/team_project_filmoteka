@@ -1,29 +1,17 @@
-// кнопки налаштувань і фільтрів, поки залишив
+import genresObj from '../genres.json';
+import ApiService from './fetchProdactsAPI';
+const filterGenres = document.getElementById('settings');
 
-// const refsEl = {
-//   btnFiltersEl: document.getElementById('button-filters'),
-//   menuFiltersEl: document.getElementById('menu-filters'),
-//   btnGenresEl: document.getElementById('button-genres'),
-//   genresContainerEl: document.getElementById('genres-container'),
-//   btnResetFiltersEl: document.getElementById('button-reset'),
-// };
+filterGenres.addEventListener('click', onClick);
 
-// refsEl.btnFiltersEl.addEventListener('click', () =>
-//   refsEl.menuFiltersEl.classList.toggle('menu-filters')
-// );
+function onClick(evt) {
+  console.log(evt.target.value);
+}
 
-// функція конвертаціі id жанра в назву жанра
+export {};
 
-import genresList from '../genres.json';
-
-const genresConverting = genresIds => {
-  const genreArray = [];
-  genresIds.map(genreId => {
-    genresList.map(genre => {
-      if (genreId === genre.id) {
-        genreArray.push(genre.name);
-      }
-    });
-  });
-  return genreArray.join(', ');
-};
+const btnFiltersEl = document.getElementById('button-filters');
+const menuFiltersEl = document.getElementById('menu-filters');
+btnFiltersEl.addEventListener('click', e =>
+  menuFiltersEl.classList.toggle('is-hidden')
+);

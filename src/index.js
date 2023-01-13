@@ -2,6 +2,7 @@ import { sliderRevenueFilms } from './js/slideRevenueFilms';
 import { backToTop } from './js/scrolToHome';
 import { ShowFilms } from './js/functionsForFilms';
 import { onTeamModal } from './js/team_modal';
+import { onClick } from './js/menuFilters';
 
 // header
 
@@ -11,10 +12,8 @@ sliderRevenueFilms();
 ShowFilms();
 // фільми топ, фільми за пошуком
 
-
 backToTop();
 // кнопка повернення до гори
 
 // footer
 onTeamModal();
-

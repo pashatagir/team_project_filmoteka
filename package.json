@@ -1,8 +1,8 @@
 {
-  "name": "filmoteka",
+  "name": "team_project_filmoteka",
   "version": "2.0.0",
   "description": "",
-  "homepage": "https://pashatagir.github.io/team_project_filmoteka/",
+  "homepage": "https://pashatagir.github.io/team_project_filmoteka",
   "scripts": {
     "start": "parcel src/*.html",
     "build": "parcel build src/*.html --public-url /team_project_filmoteka/"

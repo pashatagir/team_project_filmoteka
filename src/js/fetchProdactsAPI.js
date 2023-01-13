@@ -78,4 +78,19 @@ export default class ApiService {
   set pageNum(newPage) {
     this.page = newPage;
   }
+
+  // Фнкція повернення масиву жанрів
+  async getGanresList() {
+    try {
+      const url = `${BASE_URL}genre/movie/list${api_key}&language=en-US`;
+      return await axios.get(url).then(response => {
+        if (!response) {
+          throw new Error(response.status);
+        }
+        return response.data;
+      });
+    } catch (error) {
+      console.error();
+    }
+  }
 }

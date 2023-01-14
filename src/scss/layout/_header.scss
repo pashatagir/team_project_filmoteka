@@ -130,8 +130,11 @@
     text-transform: uppercase;
   }
 
-  &__item:first-of-type {
+  &__item:not(:last-of-type) {
     margin-right: 40px;
+    @media screen and (max-width: 400px) {
+      margin-right: 10px;
+    }
   }
 
   &__link {
@@ -255,10 +258,8 @@
   // !menu filtres on button
 
   &__filters {
-    position: absolute;
-    bottom: 0;
-    left: 80px;
-    padding-bottom: 10px;
+    position: relative;
+    left: 20%;
     @include mq(tablet) {
       left: 27%;
     }
@@ -269,15 +270,9 @@
 
   &__settings {
     flex-direction: row-reverse;
-    position: absolute;
-    bottom: 0;
-    right: 80px;
-    padding-bottom: 10px;
+    position: relative;
     @include mq(tablet) {
       right: 27%;
-    }
-    @include mq(desktop) {
-      right: 37%;
     }
   }
 
@@ -291,12 +286,34 @@
 
 .menu__filters {
   position: absolute;
-  bottom: -10%;
+  bottom: -27px;
   @include mq(mobile-only) {
-    left: 50%;
+    left: 10%;
     transform: translateX(-50%);
   }
-  left: 25%;
+  left: -17%;
+  display: flex;
+  z-index: 3;
+  background-color: #10181d;
+  gap: 20px;
+  padding: 5px 10px;
+  border-bottom-right-radius: 5px;
+  border-bottom-left-radius: 5px;
+  display: none;
+}
+.settings__item:first-of-type:hover .menu__filters,
+.settings__item:first-of-type:focus-within .menu__filters {
+  display: flex;
+}
+
+.menu__settings {
+  position: absolute;
+  bottom: -27px;
+  @include mq(mobile-only) {
+    left: 87%;
+    transform: translateX(-50%);
+  }
+  left: 70%;
   display: flex;
   z-index: 1;
   background-color: #10181d;
@@ -306,8 +323,8 @@
   border-bottom-left-radius: 5px;
   display: none;
 }
-.settings__item:hover .menu__filters,
-.settings__item:focus-within .menu__filters {
+.settings__item:last-of-type:hover .menu__settings,
+.settings__item:last-of-type:focus-within .menu__settings {
   display: flex;
 }
 
@@ -379,4 +396,21 @@ option {
 .menu-filters--settings {
   display: flex;
   gap: 20px;
+}
+
+.settings__list {
+  max-width: 360px;
+  justify-content: space-between;
+  display: flex;
+  position: relative;
+  bottom: -62px;
+  margin: 0 auto;
+  @include mq(desktop) {
+    bottom: -55px;
+  }
+}
+
+.btn__modal--library {
+  border-color: $color-extra-text;
+  color: $color-extra-text;
 }

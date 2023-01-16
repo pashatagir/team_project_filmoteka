@@ -1,5 +1,4 @@
 const themeBtn = document.querySelector('#theme-btn');
-console.log(themeBtn);
 
 export function onFirstLoadTheme() {
   document.querySelector('.theme-dark').disabled = true;
@@ -7,6 +6,14 @@ export function onFirstLoadTheme() {
   if (result === 'dark') {
     document.querySelector('.theme-dark').disabled = false;
     themeBtn.value = 'light';
+  }
+}
+
+export function onFirstLoadThemeLibrary() {
+  document.querySelector('.theme-dark').disabled = true;
+  const result = localStorage.getItem('ui-theme');
+  if (result === 'dark') {
+    document.querySelector('.theme-dark').disabled = false;
   }
 }
 

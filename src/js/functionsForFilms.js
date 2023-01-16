@@ -1,10 +1,11 @@
 import { refs } from './refs';
 import { onSearchFormSubmit } from './searchFilms';
-import ApiService from './fetchProdactsAPI';
+// import ApiService from './fetchProdactsAPI';
+import apiService from './fetchProdactsAPI';
 import { renderFilmCard } from './renderFunction';
 import { pagination } from './pagination';
 
-const apiService = new ApiService();
+// const apiService = new ApiService();
 // екземпляр класу в який пишемо виклики фільмів по потребі
 
 export function ShowFilms() {
@@ -17,9 +18,11 @@ export function ShowFilms() {
 // фільми топ, фільми за пошуком
 
 async function topFilms() {
+  console.log('top films');
   const results = await apiService.getPopularFilms();
   try {
     renderFilmCard(results);
+    //додаю пагінацію
     pagination.reset(results.total_results);
   } catch (error) {
     console.log(error);

@@ -1,10 +1,8 @@
 import Pagination from 'tui-pagination';
 import { onMyButtonClick } from './scrolToTop';
-import ApiService from './fetchProdactsAPI';
+import apiService from './fetchProdactsAPI';
 import { renderFilmCard } from './renderFunction';
 import { refs } from './refs';
-
-const apiService = new ApiService();
 
 const options = {
   totalItems: 0,
@@ -35,18 +33,45 @@ const options = {
 
 export const pagination = new Pagination('pagination', options);
 
-pagination.on('afterMove', loadMoreFilms);
+pagination.on('afterMove', onPaginationClick);
 
-async function loadMoreFilms(event) {
+async function onPaginationClick(event) {
   onMyButtonClick();
-  const currentPage = event.page;
-  apiService.pageNum = currentPage;
+  const page = event.page;
+  localStorage.setItem('page-value', page);
+  apiService.pageNum = page;
 
-  const results = await apiService.getPopularFilms();
-  renderFilmCard(results);
+  if (
+    !localStorage.getItem('year-value') &&
+    !localStorage.getItem('genre-value') &&
+    !localStorage.getItem('query-value')
+  ) {
+    console.log('nothing');
+    const results = await apiService.getPopularFilms();
+    renderFilmCard(results);
+  } else if (
+    !localStorage.getItem('year-value') &&
+    !localStorage.getItem('genre-value') &&
+    localStorage.getItem('query-value')
+  ) {
+    console.log('only query');
+    apiService.query = localStorage.getItem('query-value');
+    apiService.pageNum = page;
+    const results = await apiService.getSearchFilms();
+    renderFilmCard(results);
+  } else {
+    console.log('else');
+    // const results = await getSearchByFilters(
+    //   page,
+    //   localStorage.getItem('query-value'),
+    //   localStorage.getItem('genre-value'),
+    //   localStorage.getItem('year-value')
+    // );
+    const result = await apiService.getRevenueFilms(true);
+    renderFilmCard(result);
+  }
 }
 
 export function cleanPagination() {
   refs.paginationList.innerHTML = '';
 }
-

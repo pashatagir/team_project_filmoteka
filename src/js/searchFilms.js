@@ -1,12 +1,12 @@
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
-import ApiService from './fetchProdactsAPI';
+// import ApiService from './fetchProdactsAPI';
+import apiService from './fetchProdactsAPI';
 import { renderFilmCard } from './renderFunction';
 import { refs } from './refs';
 import { pagination } from './pagination';
 import { cleanPagination } from './pagination';
-import { onMyButtonClick } from './scrolToTop';
 
-const apiService = new ApiService();
+// const apiService = new ApiService();
 
 refs.inputEl.addEventListener('click', onSearchFormReset);
 refs.searchForm.addEventListener('submit', onSearchFormSubmit);
@@ -23,6 +23,8 @@ export async function onSearchFormSubmit(e) {
 
   apiService.page = 1;
   apiService.query = refs.inputEl ? refs.inputEl.value.trim() : '';
+  localStorage.setItem('input-value', apiService.query);
+
   if (apiService.query === '') {
     return;
   }
@@ -31,18 +33,9 @@ export async function onSearchFormSubmit(e) {
   apiService.totalResults = results.total_results;
   try {
     renderFilmCard(results);
+    //додаю пагінацію
     pagination.reset(results.total_results);
-    //додаю пагінацію для рендерінга додаткових сторінок при пошуку
-    pagination.on('afterMove', loadMoreSearchFilms);
 
-    async function loadMoreSearchFilms(event) {
-      onMyButtonClick();
-      const currentPage = event.page;
-      apiService.pageNum = currentPage;
-      const results = await apiService.getSearchFilms();
-
-      renderFilmCard(results);
-    }
     if (apiService.totalResults === 0) {
       cleanPagination();
       Notify.failure(

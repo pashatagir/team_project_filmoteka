@@ -5,7 +5,7 @@ import { getFilterQuery, getQueryAtributes } from './menuFilters';
 const KEY = '32432509d17cea42104bbb7507a382c7';
 const api_key = `?api_key=${KEY}`;
 const BASE_URL = 'https://api.themoviedb.org/3/';
-export class ApiService {
+class ApiService {
   constructor() {
     this.totalResults = 0;
     this.searchQuery = '';
@@ -40,8 +40,7 @@ export class ApiService {
           throw new Error(response.status);
         }
         Loading.remove();
-        //  console.log(response.data.results);
-        // console.log(response.data);
+
         return response.data;
       });
     } catch (error) {
@@ -53,10 +52,11 @@ export class ApiService {
   async getSearchFilms() {
     // debugger;
     try {
+      const filterParams = getFilterQuery();
       Loading.pulse('Loading...', {
         backgroundColor: 'rgba(0,0,0,0.8)',
       });
-      const url = `${BASE_URL}search/movie${api_key}&query=${this.searchQuery}&page=${this.page}`;
+      const url = `${BASE_URL}search/movie${api_key}${filterParams}&query=${this.searchQuery}&page=${this.page}`;
       return await axios.get(url).then(response => {
         if (!response) {
           throw new Error(response.status);
@@ -69,19 +69,17 @@ export class ApiService {
       throw error;
     }
   }
-  // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  // !метод за яким віпрацьовує запит і пагінація при використанні фільтрів
   async getMoviesForMainView() {
-    const queryAtributes = getQueryAtributes();
-    if (query === '' && (genre !== '' || year !== '')) {
-      // якщо немає query але є жанр або рік
-      // getRevenueFilms()
-    } else if (query !== '') {
+    const { primary_release_year, with_genres, query } = getQueryAtributes();
+    if (query) {
       // якщо є query незалежно від наявності genre, year
-      // getSearchFilms()
-    } else {
-      //  за замовчуванням якщо немає query, genre, year
-      // getPopularFilms;
+      return this.getSearchFilms();
+    } else if (!query && (with_genres || primary_release_year)) {
+      // якщо немає query але є жанр або рік
+      return this.getRevenueFilms(true);
     }
+    return this.getPopularFilms();
   }
 
   // пошук фільму по id

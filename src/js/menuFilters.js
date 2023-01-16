@@ -3,7 +3,8 @@ import { Loading } from 'notiflix/build/notiflix-loading-aio';
 import { renderFilmCard } from './renderFunction';
 import { refs } from './refs';
 import { pagination } from './pagination';
-import ApiService from './fetchProdactsAPI';
+import apiService from './fetchProdactsAPI';
+import { resetQuery } from './searchFilms';
 
 const KEY = '32432509d17cea42104bbb7507a382c7';
 const api_key = `?api_key=${KEY}`;
@@ -95,55 +96,21 @@ export const getQueryAtributes = () => ({
   query: localStorage.getItem('query-value'),
 });
 
-// export const getUrlParams = (page = '', query = '', genre = '', year = '') => {
 export const getFilterQuery = () => {
   const searchAttributes = getQueryAtributes();
 
-  // const urlAttributes = {
-  //   discover: `/trending`,
-  //   week: `/week`,
-  // };
-
-  // default /trending/week
-  // if query && !genre /search
-  // if !query && genre || year /discover
-
-  // if (query !== '' && genre === '') {
-  //   urlAttributes.discover = '/search';
-  //   urlAttributes.week = '';
-  // }
-  // if (query === '' && (genre !== '' || year !== '')) {
-  //   urlAttributes.discover = '/discover';
-  //   urlAttributes.week = '';
-  // }
+  // тут query нам не потрібен бо він підставляється всередені apiService
+  delete searchAttributes.query;
 
   // query should always be present even if empty
   const searchKeyValuePairs = Object.entries(searchAttributes).filter(
     ([key, value]) => Boolean(value)
   );
 
-  console.log(searchAttributes);
-
   return searchKeyValuePairs.reduce(
     (acc, [filterKey, filterValue]) => `${acc}&${filterKey}=${filterValue}`,
     ''
   );
-
-  // return {
-  //   week: urlAttributes.week,
-  //   discover: urlAttributes.discover,
-  //   searchParams: '',
-  //   // searchParams: searchKeyValuePairs.filter(([_, value]) => Boolean(value)) ?
-  //   //   searchKeyValuePairs.reduce((acc, [key, value]) => , '') : null,
-  // };
-
-  // return '';
-  // let { data } = await axios.get(
-  //   `${BASE_URL}${f.discover}/movie${f.week}?api_key=${KEY}${f.genre}${f.year}&language=en-US${f.queryFetch}&page=${page}`
-  // );
-  // saveLocalStorage('moviesData', data.results);
-
-  // return data;
 };
 
 // !фунція яка робить скидання фільтраціі і перезавантаження сторінки до поточного стану
@@ -159,8 +126,9 @@ function onSelectReset(e) {
   apiService.pageNum = page;
   saveLocalStorage('genre-value', genre);
   saveLocalStorage('year-value', year);
+  saveLocalStorage('page-value', page);
+  resetQuery();
 
-  // apiService.getPopulargFilms().then(data => {
   apiService.getRevenueFilms().then(data => {
     renderFilmCard(data);
     // додаю пагінацію
@@ -168,7 +136,6 @@ function onSelectReset(e) {
     dataUpdate(data);
     Loading.remove();
   });
-  saveLocalStorage('page-value', page);
 }
 
 // !функція фільтраціі за жанром
@@ -184,7 +151,7 @@ async function onSelectGenre(e) {
     saveLocalStorage('genre-value', genre);
 
     try {
-      const data = await apiService.getRevenueFilms(true);
+      const data = await apiService.getMoviesForMainView();
       console.log(data);
       renderFilmCard(data);
       //додаю пагінацію
@@ -208,7 +175,7 @@ function onSelectYear(e) {
   apiService.pageNum = 1;
   year = e.target.value;
   saveLocalStorage('year-value', year);
-  apiService.getRevenueFilms(true).then(data => {
+  apiService.getMoviesForMainView().then(data => {
     renderFilmCard(data);
     //додаю пагінацію
     pagination.reset(data.total_results);

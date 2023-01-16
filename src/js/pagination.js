@@ -3,7 +3,6 @@ import { onMyButtonClick } from './scrolToTop';
 import apiService from './fetchProdactsAPI';
 import { renderFilmCard } from './renderFunction';
 import { refs } from './refs';
-
 const options = {
   totalItems: 0,
   itemsPerPage: 20,
@@ -41,35 +40,10 @@ async function onPaginationClick(event) {
   localStorage.setItem('page-value', page);
   apiService.pageNum = page;
 
-  if (
-    !localStorage.getItem('year-value') &&
-    !localStorage.getItem('genre-value') &&
-    !localStorage.getItem('query-value')
-  ) {
-    console.log('nothing');
-    const results = await apiService.getPopularFilms();
-    renderFilmCard(results);
-  } else if (
-    !localStorage.getItem('year-value') &&
-    !localStorage.getItem('genre-value') &&
-    localStorage.getItem('query-value')
-  ) {
-    console.log('only query');
-    apiService.query = localStorage.getItem('query-value');
-    apiService.pageNum = page;
-    const results = await apiService.getSearchFilms();
-    renderFilmCard(results);
-  } else {
-    console.log('else');
-    // const results = await getSearchByFilters(
-    //   page,
-    //   localStorage.getItem('query-value'),
-    //   localStorage.getItem('genre-value'),
-    //   localStorage.getItem('year-value')
-    // );
-    const result = await apiService.getRevenueFilms(true);
-    renderFilmCard(result);
-  }
+  // !вся така логіка яка відповідає за вибор методу апісервіс знаходиься в методі getMoviesForMainView
+  const results = await apiService.getMoviesForMainView();
+  renderFilmCard(results);
+  console.log(results);
 }
 
 export function cleanPagination() {

@@ -1,0 +1,128 @@
+Подключить в index.js - import {} from './js/language';
+
+Hа кнопки які змінюють мову треба повісити data-btn='en' и data-btn='ua' відповідно
+
+1. index.html, my_library.html
+<title data-lang="home-page-title">Filmoteka</title>
+
+2. my_library.html
+<title data-lang="library-page-title">Filmoteka</title>
+
+3. home-header.html
+<span data-lang="home">Home</span>
+<span data-lang="library">My library</span>
+<span data-lang="singIn">Sign in</span>
+<span data-lang="singOut">Sign out</span>
+<div class="header__warning is-hidden" data-lang="searchError">Search result not successful. Enter the correct movie name</div>
+<span data-lang="filters">Filters</span>
+<span data-lang="genres">Genres</span>
+
+<button type="button" class="button" value="start" data-lang="genre">Genre</button>
+<button type="button" class="button" value="12" data-lang="adventure">adventure</button>
+<button type="button" class="button" value="16" data-lang="animation">Animation</button>
+<button type="button" class="button" value="35" data-lang="comedy">Comedy</button>
+<button type="button" class="button" value="80" data-lang="crime">Crime</button>
+<button type="button" class="button" value="99" data-lang="documentary">Documentary</button>
+<button type="button" class="button" value="18" data-lang="drama">Drama</button>
+<button type="button" class="button" value="10751" data-lang="family">Family</button>
+<button type="button" class="button" value="14" data-lang="fantasy">Fantasy</button>
+<button type="button" class="button" value="36" data-lang="history">History</button>
+<button type="button" class="button" value="27" data-lang="horror">Horror</button>
+<button type="button" class="button" value="10402" data-lang="music">Music</button>
+<button type="button" class="button" value="9648" data-lang="mystery">Mystery</button>
+<button type="button" class="button" value="10749" data-lang="romance">Romance</button>
+<button type="button" class="button" value="878" data-lang="scienceFiction">Science Fiction</button>
+<button type="button" class="button" value="10770" data-lang="tvMovie">TV Movie</button>
+<button type="button" class="button" value="53" data-lang="thriller">Thriller</button>
+<button type="button" class="button" value="10752" data-lang="war">War</button>
+<button type="button" class="button" value="37" data-lang="western">Western</button>
+
+<span data-lang="date">Date</span>
+<span data-lang="reset">Reset</span>
+<span data-lang="settings">Settings</span>
+<span data-lang="theme">Theme</span>
+
+4. library-header.html
+<span data-lang="home">Home</span>
+<span data-lang="library">My library</span>
+
+<button type="button" class="btn__modal btn__modal--library btn__watched" data-lang="watched">Watched</button>
+<button type="button" class="btn__modal btn__modal--library btn__queue" data-lang="queue">Queue</button>
+
+5. slider-new-films.html
+<h1 class="caption" data-lang="recomend">Recommended most revenue movies</h1>
+
+6. library-header.html
+<span data-lang="home">Home</span>
+<span data-lang="library">My library</span>
+<span data-lang="singOut">Sign out</span>
+
+<li><button type="button" class="" data-lang="watched">Watched</button></li>
+<li><button type="button" class="" data-lang="queue">Queue</button></li>
+
+7. footer.html
+<p class="footer__soc-text" data-lang="application">Our Application</p>
+<p class="footer__soc-text" data-lang="support">Support</p>
+<p class="footer__soc-text" data-lang="networks">Join our networks</p>
+<p class="footer__text">&#169 2020 | <span data-lang="reserved">All Rights Reserved</span> | </p>
+<p class="footer__text" data-lang="developereloped">Developereloped with</p>
+<p class="footer__text"><span data-lang="by">by</span></p><button type="button" class="team_modal_btn team-modal-open"><span data-lang="students">GoIT Students</span></button>
+<p class="student__text student__text_name" data-lang="dev1">Developer1</p>
+<p class="student__text" data-lang="dev">Developer</p>
+<p class="student__text student__text_name" data-lang="dev2">Developer2</p>
+<p class="student__text" data-lang="dev">Developer</p>
+<p class="student__text student__text_name" data-lang="dev3">Developer3</p>
+<p class="student__text" data-lang="dev">Developer</p>
+<p class="student__text student__text_name" data-lang="dev4">Developer4</p>
+<p class="student__text" data-lang="dev">Developer</p>
+
+8. modal-registration.html
+<p class="modal_login__title_signIn" data-lang="titel-register">Please enter your e-mail and password</p>
+<label for="email" class="modal_login__label" data-lang="mail">E-mail</label>
+<label for="password" class="modal_login__label" data-lang="pass">Password</label>
+<button type="submit" class="modal_login__button_register btn__modal js-auth__registration-btn" disabled data-lang="sign-up">Sign up</button>
+<button type="submit" class="modal_login__button_confirm btn__modal js-auth__entrance-btn" data-lang="sign-in">Sign in</button>
+
+9. home-section-films.html
+<h1 class="visually-hidden__title" data-lang="new-movies">new best movies online</h1>
+
+10. library-section-films.html
+<h2 class="library-empty__title">
+<span data-lang="movies-list-library-1">Here will be your list of movies. You can fill them</span>
+<a href="/src/index.html" class="library-empty__link">
+<span data-lang="movies-list-library-2">HOME</span>
+</a>
+<span data-lang="movies-list-library-3">page</span>
+</h2>
+
+11. modal-film.html
+<p class="film-modal__txt--left" data-lang='vote'>Vote / Votes</p>
+<p class="film-modal__txt--left" data-lang='popularity'>Popularity</p>
+<p class="film-modal__txt--left" data-lang='org-title'>Original title</p>
+<p class="film-modal__txt--left" data-lang='genre'>Genre</p>
+<h3 class="film-modal__about-title" data-lang='about'>About</h3>
+<h3 class="film-modal__watch-trailers-title" data-lang='watch-trailers'>Watch trailers</h3>
+
+12. modal-team.html
+<p class="student__text student__text_name" data-lang="mushko">Альона Мишко</p>
+<p class="student__text" data-lang="team-lead">Team Lead</p>
+<p class="student__text student__text_name" data-lang="vodvud">Надія Водвуд</p>
+<p class="student__text" data-lang="scrum-master">Scrum master</p>
+<p class="student__text student__text_name" data-lang="bezsiniy">Павло Безсінний</p>
+<p class="student__text" data-lang="developer1">Developer</p>
+<p class="student__text student__text_name" data-lang="kovalenko">СвітланаКоваленко</p>
+<p class="student__text" data-lang="developer2">Developer</p>
+<p class="student__text student__text_name" data-lang="nikonov">ОлександрНіконов</p>
+<p class="student__text" data-lang="developer3">Developer</p>
+<p class="student__text student__text_name" data-lang="volodko">Денис Володько</p>
+<p class="student__text" data-lang="developer4">Developer</p>
+<p class="student__text student__text_name" data-lang="katishev">ОлександрКатишев</p>
+<p class="student__text" data-lang="developer5">Developer</p>
+<p class="student__text student__text_name" data-lang="filipenko">АнастасіяФіліпенко</p>
+<p class="student__text" data-lang="developer6">Developer</p>
+<p class="student__text student__text_name" data-lang="shkilniuk">Дмитро Шкільнюк</p>
+<p class="student__text" data-lang="developer7">Developer</p>
+<p class="student__text student__text_name" data-lang="protas">Тетяна Протас</p>
+<p class="student__text" data-lang="developer8">Developer</p>
+<p class="student__text student__text_name" data-lang="stolbin">Микита Столбін</p>
+<p class="student__text" data-lang="developer9">Developer</p>

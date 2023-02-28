@@ -1,14 +1,15 @@
 export const langArr = {
-  // Заголовки сторінки //
+  // index Заголовки сторінки //
     'home-page-title': {
       ua: "Фільмотека головна",
       en: "Filmoteka",
     },
+    // my_library Заголовки сторінки //
     'library-page-title': {
-        ua: "Фільмотека Моя бібліотека",
-        en: "Filmoteka My-library",
-      },
-  // Навігація //
+      ua: "Фільмотека Моя бібліотека",
+      en: "Filmoteka My-library",
+    },
+    // home-header Навігація //
     'home': {
       ua: "головна",
       en: "home",
@@ -17,15 +18,15 @@ export const langArr = {
       ua: "моя бібліотека",
       en: "my library",
     },
-    'singIn': {
+    'signIn': {
       ua: "Вхід",
-      en: "Sing In",
+      en: "Sign In",
     },
-    'singOut': {
+    'signOut': {
       ua: "Вихід",
-      en: "Sing Out",
+      en: "Sign Out",
     },
-  // Пошук //
+    // home-header Пошук //
     'search': {
       ua: "Пошук фільму за назвою",
       en: "Movie search",
@@ -35,10 +36,10 @@ export const langArr = {
       en: "Search result not successful. Enter the correct movie name",
     },
     'recomend': {
-      ua: "Рекомендовані фільми",
-      en: "Recommended movies",
+      ua: 'Рекомендовані найбільш касові фільми',
+      en: 'Recommended most revenue movies',
     },
-  // Фільтр //
+    // home-header Фільтр //
     'filters': {
       ua: "Фільтри",
       en: "Filters",
@@ -48,19 +49,15 @@ export const langArr = {
       en: "Genres",
     },
     'action': {
-      ua: "Екшен",
+      ua: "Бойовик",
       en: "Action",
-    },
-    'genre': {
-      ua: "Жанр",
-      en: "Genre",
     },
     'adventure': {
       ua: "Пригоди",
       en: "Adventure",
     },
     'animation': {
-      ua: "Анімація",
+      ua: "Мультфільми",
       en: "Animation",
     },
     'comedy': {
@@ -68,35 +65,35 @@ export const langArr = {
       en: "Comedy",
     },
     'crime': {
-      ua: "Детектив",
+      ua: "Кримінал",
       en: "Crime",
     },
     'documentary': {
-      ua: "Документальний фільм",
+      ua: "Документальний",
       en: "Documentary",
     },
     'drama': {
-      ua: "Драма",
+      ua: "Драми",
       en: "Drama",
     },
     'family': {
-      ua: "Сімейний фільм",
+      ua: "Сімейний",
       en: "Family",
     },
     'fantasy': {
-      ua: "Фантастика",
+      ua: "Фентезі",
       en: "Fantasy",
     },
     'history': {
-      ua: "Історичні",
+      ua: "Історичний",
       en: "History",
     },
     'horror': {
-      ua: "Фільм жахів",
+      ua: "Жахи",
       en: "Horror",
     },
     'music': {
-      ua: "Мьюзикли",
+      ua: "Музика",
       en: "Music",
     },
     'mystery': {
@@ -112,7 +109,7 @@ export const langArr = {
       en: "Science Fiction",
     },
     'tvMovie': {
-      ua: "Телевызійні програми",
+      ua: "Телевізійні програми",
       en: "History",
     },
     'thriller': {
@@ -120,7 +117,7 @@ export const langArr = {
       en: "Thriller",
     },
     'war': {
-      ua: "Фільми про війну",
+      ua: "Військовий",
       en: "War",
     },
     'western': {
@@ -132,7 +129,7 @@ export const langArr = {
       en: "Date",
     },
     'reset': {
-      ua: "Скинути фільтр",
+      ua: "Оновити",
       en: "Reset",
     },
     'settings': {
@@ -143,16 +140,21 @@ export const langArr = {
       ua: "Тема",
       en: "Theme",
     },
-  // Кнопки додавання фільмів //
-    'watched': {
-      ua: "Переглянути",
-      en: "Watched",
+    // home-header new film // 
+    'new-movies': {
+      ua: 'нові найкращі фільми онлайн',
+      en: 'new best movies online',
     },
-    'queue': {
-      ua: "В черзі",
-      en: "Queue",
-    },
-  // Footer //
+    // library-header Кнопки додавання фільмів //
+      'watched': {
+        ua: "Переглянуті",
+        en: "Watched",
+      },
+      'queue': {
+        ua: "В черзі",
+        en: "Queue",
+      },
+    // Footer //
     'application': {
       ua: "Наш додаток",
       en: "Our Application",
@@ -169,40 +171,19 @@ export const langArr = {
       ua: "Усі права захищено",
       en: "All Rights Reserved",
     },
-    'developereloped': {
-      ua: "Розроблено з",
-      en: "Developereloped with",
+    'developed': {
+      ua: "розроблено з",
+      en: "Developed with",
     },
     'by': {
       ua: "",
       en: "by",
     },
     'students': {
-      ua: "Студенти GoIT",
+      ua: "студентами GoIT",
       en: "GoIT Students",
     },
-  // Розробники //
-    'dev': {
-      ua: "Розробник",
-      en: "Developer",
-    },
-    'dev1': {
-      ua: "Розробник1",
-      en: "Developer1",
-    },
-    'dev2': {
-      ua: "Розробник2",
-      en: "Developer2",
-    },
-    'dev3': {
-      ua: "Розробник3",
-      en: "Developer3",
-    },
-    'dev4': {
-      ua: "Розробник4",
-      en: "Developer4",
-    },
-  // Modal registration // 
+  // modal-registration // 
   'titel-register': {
     ua: "Будь ласка, введіть свою електронну пошту та пароль",
     en: "Please enter your e-mail and password",
@@ -223,5 +204,147 @@ export const langArr = {
     ua: "Увійти",
     en: "Sign in",
   },
-  };
-  
+  // Library section films // 
+  'movies-list-library-1': {
+    ua: 'Тут буде ваш список фільмів. Ви можете наповнити його на',
+    en: 'Here will be your list of movies. You can fill them',
+  }, 
+  'movies-list-library-2': {
+    ua: 'ГОЛОВНІЙ',
+    en: 'HOME',
+  }, 
+  'movies-list-library-3': {
+    ua: 'сторінці',
+    en: 'page',
+  },
+  // Modal Film //
+  'vote': {
+    ua: 'Рейтинг / Голоси',
+    en: 'Vote / Votes',
+  },
+  'popularity': {
+    ua: 'Популярність',
+    en: 'Popularity',
+  },
+  'genre': {
+    ua: 'Жанр',
+    en: 'Genre',
+  },
+  'about': {
+    ua: 'Про фільм',
+    en: 'About',
+  },
+  'add-watched': {
+    ua: 'переглянуто',
+    en: 'add to watched',
+  },
+  'remove-watched': {
+    ua: 'видалити з переглянутих',
+    en: 'remove from watched',
+  },
+  'add-queue': {
+    ua: 'додати в чергу',
+    en: 'add to queue',
+  },
+  'remove-queue': {
+    ua: 'видалити з черги',
+    en: 'remove from queue',
+  },
+  'watch-trailers': {
+    ua: 'Дивитись трейлер',
+    en: 'Watch trailers',
+  },
+  'org-title': {
+    ua: 'Оригінальна назва',
+    en: 'Original title',
+  },
+  // modal-team.html //
+'mushko': {
+  ua: 'Альона Мишко',
+  en: 'Alena Mushko',
+},
+'team-lead': {
+  ua: 'Тімлід',
+  en: 'Team Lead',
+},
+'vodvud': {
+  ua: 'Надія Водвуд',
+  en: 'Vodvud Nadiya',
+},
+'scrum-master': {
+  ua: 'Скрам майстер',
+  en: 'Scrum master',
+},
+'bezsiniy': {
+  ua: 'Павло Безсінний',
+  en: 'Pavlo Bezsinniy',
+},
+'developer1': {
+  ua: 'Розробник',
+  en: 'Developer',
+},
+'kovalenko': {
+  ua: 'Світлана Коваленко',
+  en: 'Svitlana Kovalenko',
+},
+'developer2': {
+  ua: 'Розробник',
+  en: 'Developer',
+},
+'nikonov': {
+  ua: 'Олександр Ніконов',
+  en: 'Alexandr Nikonov',
+},
+'developer3': {
+  ua: 'Розробник',
+  en: 'Developer',
+},
+'volodko': {
+  ua: 'Денис Володько',
+  en: 'Denys Volodko',
+},
+'developer4': {
+  ua: 'Розробник',
+  en: 'Developer',
+},
+'katishev': {
+  ua: 'Олександр Катишев',
+  en: 'Olexandr Katyshev',
+},
+'developer5': {
+  ua: 'Розробник',
+  en: 'Developer',
+},
+'filipenko': {
+  ua: 'Анастасія Філіпенко',
+  en: 'Anastasiya Filipenko',
+},
+'developer6': {
+  ua: 'Розробник',
+  en: 'Developer',
+},
+'shkilniuk': {
+  ua: 'Дмитро Шкільнюк',
+  en: 'Dmytro Shkilniuk',
+},
+'developer7': {
+  ua: 'Розробник',
+  en: 'Developer',
+},
+'protas': {
+  ua: 'Тетяна Протас',
+  en: 'Tetyana Protas',
+},
+'developer8': {
+  ua: 'Розробник',
+  en: 'Developer',
+},
+'stolbin': {
+  ua: 'Микита Столбін',
+  en: 'Mykyta Stolbin',
+},
+'developer9': {
+  ua: 'Розробник',
+  en: 'Developer',
+},
+};

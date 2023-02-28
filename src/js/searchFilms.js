@@ -1,12 +1,17 @@
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
-import apiService from './fetchProdactsAPI';
+import ApiService from './fetchProdactsAPI';
 import { renderFilmCard } from './renderFunction';
 import { refs } from './refs';
 import { pagination } from './pagination';
 import { cleanPagination } from './pagination';
+const apiService = new ApiService();
 
-refs.inputEl.addEventListener('click', onSearchFormReset);
-refs.searchForm.addEventListener('submit', onSearchFormSubmit);
+if (!refs.inputEl) {
+  return;
+} else {
+  refs.inputEl.addEventListener('click', onSearchFormReset);
+  refs.searchForm.addEventListener('submit', onSearchFormSubmit);
+}
 
 function onSearchFormReset() {
   if (apiService.query !== '') {
@@ -14,45 +19,64 @@ function onSearchFormReset() {
     return;
   }
 }
-
 export async function onSearchFormSubmit(e) {
   e.preventDefault();
-
   apiService.page = 1;
   apiService.query = refs.inputEl ? refs.inputEl.value.trim() : '';
   localStorage.setItem('query-value', apiService.query);
-
   if (apiService.query === '') {
-    // 1) відправляється запит з query
-    // 2) я видаляю query і сабмічу
-    // 3) нічого не відбувається, бо квері пусте, а має відправлятись запит без query
+    if (localStorage.getItem('language') === 'en') {
+        Notify.failure(
+      'Sorry, You need to write something in search query. Please try again.'
+    );
+        console.log('en');
+      } else if (localStorage.getItem('language') === 'ua') {
+       Notify.failure(
+      'Вибачте, вам потрібно написати щось в пошуковому полі. Спробуйте знову.'
+    );
+      }
+
+    // попередження яке є на макеті хочеш розкоментує а хочеш не
+    refs.warningContainer.classList.remove('is-hidden');
+   
     return;
   }
-
   const results = await apiService.getSearchFilms();
   apiService.totalResults = results.total_results;
   try {
     renderFilmCard(results);
+    // !замість фунціі яка закоментована внизу просто ресетимо інпут
+    refs.inputEl.value = '';
+    // resetQuery();
+
     //додаю пагінацію
     pagination.reset(results.total_results);
-
     if (apiService.totalResults === 0) {
       cleanPagination();
-      Notify.failure(
-        'Sorry, there are no films matching your search query. Please try again.'
-      );
+      if (localStorage.getItem('language') === 'en') {
+        Notify.failure(
+          'Sorry, there are no films matching your search query. Please try again.'
+        );
+        console.log('en');
+      } else if (localStorage.getItem('language') === 'ua') {
+        Notify.info(
+          `Вибачте, не знайдено жодного філльму по вашому запиту. Будь ласка, спробуйте ще`
+        );
+      }
+
       return;
     }
     if (apiService.totalResults >= 1) {
-      Notify.success(`Hooray! We found ${apiService.totalResults} films.`);
+      if (localStorage.getItem('language') === 'en') {
+        Notify.success(`Hooray! We found ${apiService.totalResults} films.`);
+      } else if (localStorage.getItem('language') === 'ua') {
+        Notify.success(
+          `Ура! Ми знайшли по вашому запиту ${apiService.totalResults} результатів.`
+        );
+      }
     }
   } catch (error) {
     console.log(error);
   }
 }
 
-export const resetQuery = () => {
-  refs.inputEl.value = '';
-  localStorage.removeItem('query-value');
-  apiService.query = '';
-};

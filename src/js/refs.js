@@ -41,11 +41,11 @@ export const refs = {
   authForm: document.querySelector('.js-auth__form'),
 
   // my-libtary
+ btnQueue: document.querySelector('.btn__queue'),
   btnWatched: document.querySelector('.btn__watched'),
   movieLibrary: document.querySelector('.library-films'),
-  emptyTitle: document.querySelector('.library-empty__title'),
-  emptyImg: document.querySelector('.library-empty__img'),
-  btnQueue: document.querySelector('.btn__queue'),
+  libraryEmpty: document.querySelector('.library-empty'),
+ 
   // паролі
   modalSignIn: document.querySelector('.modal__log-in'),
   inputPassword: document.querySelector('#password'),
@@ -54,4 +54,6 @@ export const refs = {
   iconForUnShowPassword: document.querySelector('#icon_un_show_password'),
 
   goToTop: document.querySelector('.go-Top'),
+
+  btnTheme: document.querySelector('#theme-btn'),
 };

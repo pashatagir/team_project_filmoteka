@@ -3,35 +3,31 @@ import { Loading } from 'notiflix/build/notiflix-loading-aio';
 import { renderFilmCard } from './renderFunction';
 import { refs } from './refs';
 import { pagination } from './pagination';
-import apiService from './fetchProdactsAPI';
-import { resetQuery } from './searchFilms';
-
+import ApiService from './fetchProdactsAPI';
+// import { resetQuery } from './searchFilms';
+const apiService = new ApiService();
 const KEY = '32432509d17cea42104bbb7507a382c7';
 const api_key = `?api_key=${KEY}`;
 const BASE_URL = 'https://api.themoviedb.org/3';
 
 // !функця запису в локалсторедж
-
 const saveLocalStorage = (key, value) => {
-  // try {
-  //   const serialized = JSON.stringify(value);
-  //   localStorage.setItem(key, serialized);
-  // } catch (error) {
-  //   console.error('Set error: ', error.message);
-  // }
-  localStorage.setItem(key, value);
+  try {
+    const serialized = JSON.stringify(value);
+    localStorage.setItem(key, serialized);
+  } catch (error) {
+    console.error('Set error: ', error.message);
+  }
 };
 
 // !функція вигрузки з локалсторедж значення за ключем
-
 const loadLocalStorage = key => {
-  return localStorage.getItem(key);
-  // try {
-  //   const serialized = localStorage.getItem(key);
-  //   return serialized === null ? undefined : JSON.parse(serialized);
-  // } catch (error) {
-  //   console.error('Get error: ', error.message);
-  // }
+  try {
+    const serialized = localStorage.getItem(key);
+    return serialized === null ? undefined : JSON.parse(serialized);
+  } catch (error) {
+    console.error('Get error: ', error.message);
+  }
 };
 
 // !функція яка видаляє з локалсторедж
@@ -43,156 +39,131 @@ const removeLocalStorage = key => {
   }
 };
 
-// !функція додавання в бібіліотеку фільму по id та перевірки наявності за id в localstorage
-
-function addListLibrary(id, select) {
-  const sel = select + 'Data';
-  const moviesData = loadLocalStorage('moviesData');
-  const movieData = moviesData.find(movie => movie.id === id);
-  const libraryArray = loadLocalStorage(select) ? loadLocalStorage(select) : [];
-  const libraryData = loadLocalStorage(sel) ? loadLocalStorage(sel) : [];
-  const index = libraryArray.indexOf(id);
-  if (index < 0) {
-    libraryArray.push(id);
-    libraryData.push(movieData);
-  } else {
-    libraryArray.splice(index, 1);
-    libraryData.splice(index, 1);
-  }
-  saveLocalStorage(select, libraryArray);
-  saveLocalStorage(sel, libraryData);
-}
-
+// !функція яка перетворює данні у валідний JSON
 function dataUpdate(data) {
   localStorage.setItem('moviesData', JSON.stringify(data.results));
 }
 
-function onLogoClick(e) {
-  page = 1;
-  query = '';
-  genre = '';
-  year = '';
-  saveLocalStorage('page-value', page);
-  saveLocalStorage('query-value', query);
-  saveLocalStorage('genre-value', genre);
-  saveLocalStorage('year-value', year);
+let page = localStorage.getItem('page-value');
+
+
+// !це мій файл, закоментовувати цей рядок не буду тут вилазила помилка
+
+let query = localStorage.getItem('query-value');
+let genre = localStorage.getItem('genre-value');
+let year = localStorage.getItem('year-value');
+
+if (!refs.filterByGenre) {
+  return;
+} else {
+  refs.filterByGenre.addEventListener('click', onSelectGenre);
+  refs.filterByYear.addEventListener('click', onSelectYear);
+  refs.resetButton.addEventListener('click', onSelectReset);
 }
 
-let page = loadLocalStorage('page-value');
-let query = loadLocalStorage('query-value');
-let genre = loadLocalStorage('genre-value');
-let year = loadLocalStorage('year-value');
-
-refs.filterByGenre.addEventListener('click', onSelectGenre);
-refs.filterByYear.addEventListener('click', onSelectYear);
-refs.resetButton.addEventListener('click', onSelectReset);
-// refs.logoBtn.addEventListener('click', onLogoClick);
-
 // !функція запиту при відпрацюванні по кліку фільтра
-
-export const getQueryAtributes = () => ({
-  primary_release_year: localStorage.getItem('year-value'),
-  with_genres: localStorage.getItem('genre-value'),
-  query: localStorage.getItem('query-value'),
-});
-
-export const getFilterQuery = () => {
-  const searchAttributes = getQueryAtributes();
-
-  // тут query нам не потрібен бо він підставляється всередені apiService
-  delete searchAttributes.query;
-
-  // query should always be present even if empty
-  const searchKeyValuePairs = Object.entries(searchAttributes).filter(
-    ([key, value]) => Boolean(value)
+export const getSearchByFilters = async (
+  page = '',
+  query = '',
+  genre = '',
+  year = ''
+) => {
+  let f = {
+    year: year !== '' ? `&primary_release_year=${year}` : '',
+    genre: genre !== '' ? `&with_genres=${genre}` : '',
+    queryFetch: `&query=${query}`,
+    discover: `/trending`,
+    week: `/week`,
+  };
+  if (query === '') {
+    f.queryFetch = '';
+  }
+  if (query !== '' && genre === '') {
+    f.discover = '/search';
+    f.week = '';
+  }
+  if (query === '' && genre !== '') {
+    f.discover = '/discover';
+    f.week = '';
+  }
+  if (query === '' && year !== '') {
+    f.discover = '/discover';
+    f.week = '';
+  }
+  let { data } = await axios.get(
+    `${BASE_URL}${f.discover}/movie${f.week}?api_key=${KEY}${f.genre}${f.year}&language=en-US${f.queryFetch}&page=${page}`
   );
-
-  return searchKeyValuePairs.reduce(
-    (acc, [filterKey, filterValue]) => `${acc}&${filterKey}=${filterValue}`,
-    ''
-  );
+  saveLocalStorage('moviesData', data.results);
+  return data;
 };
-
 // !фунція яка робить скидання фільтраціі і перезавантаження сторінки до поточного стану
 function onSelectReset(e) {
   Loading.pulse('Loading...', {
     backgroundColor: 'rgba(0,0,0,0.8)',
   });
+  query = '';
   genre = '';
   year = '';
   page = 1;
-
-  // page is stored to localStore within the apiService
-  apiService.pageNum = page;
-  saveLocalStorage('genre-value', genre);
-  saveLocalStorage('year-value', year);
-  saveLocalStorage('page-value', page);
-  resetQuery();
-
-  apiService.getRevenueFilms().then(data => {
+  localStorage.setItem('query-value', query);
+  localStorage.setItem('genre-value', genre);
+  localStorage.setItem('year-value', year);
+  localStorage.setItem('page-value', page);
+  localStorage.setItem('query-value', query);
+  getSearchByFilters(page, query, genre, year).then(data => {
     renderFilmCard(data);
     // додаю пагінацію
     pagination.reset(data.total_results);
-    dataUpdate(data);
     Loading.remove();
   });
+  saveLocalStorage('page-value', page);
 }
-
 // !функція фільтраціі за жанром
-
-async function onSelectGenre(e) {
+function onSelectGenre(e) {
   if (e) {
     Loading.pulse('Loading...', {
       backgroundColor: 'rgba(0,0,0,0.8)',
     });
     genre = e.target.value;
-    apiService.pageNum = 1;
-    saveLocalStorage('page-value', page);
-    saveLocalStorage('genre-value', genre);
-
-    try {
-      const data = await apiService.getMoviesForMainView();
-      console.log(data);
+    page = 1;
+    localStorage.setItem('page-value', page);
+    localStorage.setItem('genre-value', genre);
+    getSearchByFilters(page, query, genre, year).then(data => {
       renderFilmCard(data);
       //додаю пагінацію
       pagination.reset(data.total_results);
-    } catch (e) {
-      // decide whether to throw upper or not
-      // decide whether to render 0 items
-      // renderFilmCard({ result: [] });
-      // or leave the page as is
-    } finally {
       Loading.remove();
-    }
+    });
   }
 }
-
 // !Функція фільтраціі за роком
 function onSelectYear(e) {
   Loading.pulse('Loading...', {
     backgroundColor: 'rgba(0,0,0,0.8)',
   });
-  apiService.pageNum = 1;
+  page = 1;
+  localStorage.setItem('page-value', page);
   year = e.target.value;
-  saveLocalStorage('year-value', year);
-  apiService.getMoviesForMainView().then(data => {
+  localStorage.setItem('year-value', year);
+  getSearchByFilters(page, query, genre, year).then(data => {
     renderFilmCard(data);
     //додаю пагінацію
     pagination.reset(data.total_results);
-
     Loading.remove();
   });
 }
-
 // !функція яка повертає масив обєктів жанрів і записує іх в локалсторедж
-
 export const getMovieGenres = async () => {
   const { data } = await axios.get(
     `${BASE_URL}/genre/movie/list?api_key=${KEY}`
   );
   saveLocalStorage('genresList', data);
-
   return data;
 };
 
+const resetQuery = () => {
+  refs.inputEl.value = '';
+  localStorage.removeItem('query-value');
+  apiService.query = '';
+};
 export {};

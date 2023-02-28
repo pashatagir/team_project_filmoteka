@@ -1,62 +1,87 @@
 import axios from 'axios';
 import { Loading } from 'notiflix/build/notiflix-loading-aio';
-import { getFilterQuery, getQueryAtributes } from './menuFilters';
+
+import { Notify } from 'notiflix/build/notiflix-notify-aio';
+import { MyLibrary } from './localStorage';
+import { refs } from './refs';
 
 const KEY = '32432509d17cea42104bbb7507a382c7';
 const api_key = `?api_key=${KEY}`;
 const BASE_URL = 'https://api.themoviedb.org/3/';
-class ApiService {
+
+const myLibrary = new MyLibrary();
+export default class ApiService {
+  currentLang = localStorage.getItem('language');
   constructor() {
     this.totalResults = 0;
     this.searchQuery = '';
     this.page = 1;
+    this.filmsOnPage = 12;
+    this.currentLang;
+    this.lang;
+    this.amountOfPages = 20;
   }
   //  фільми з більшим доходом
-  async getRevenueFilms(useFilters = false) {
+  async getRevenueFilms() {
+    if (this.currentLang === 'en') {
+      this.lang = 'en';
+    } else if (this.currentLang === 'ua') {
+      this.lang = 'uk';
+    }
     try {
-      // carousel should not use filters
-      const filterParams = useFilters ? getFilterQuery() : '';
-      const url = `${BASE_URL}discover/movie${api_key}${filterParams}&page=${this.page}&append_to_response=images&sort_by=revenue.desc`;
+      const url = `${BASE_URL}discover/movie${api_key}&page=1&append_to_response=images&language=${this.lang}&sort_by=revenue.desc`;
       return await axios.get(url).then(response => {
         if (!response) {
           throw new Error(response.status);
         }
+        // console.log(response.data);
         return response.data;
       });
     } catch (error) {
       console.error();
     }
   }
-
   // фільми топові
   async getPopularFilms() {
     try {
+      if (this.currentLang === 'en') {
+        this.lang = 'en';
+      } else if (this.currentLang === 'ua') {
+        this.lang = 'uk';
+      }
       Loading.pulse('Loading...', {
+        clickToClose: true,
+        svgColor: 'rgba(255, 107, 1, 0.6)',
         backgroundColor: 'rgba(0,0,0,0.8)',
       });
-      const url = `${BASE_URL}trending/movie/week${api_key}&page=${this.page}&append_to_response=images&sort_by = popularity.desc`;
+      const url = `${BASE_URL}trending/movie/week${api_key}&page=${this.page}&language=${this.lang}&append_to_response=images&sort_by = popularity.desc`;
       return await axios.get(url).then(response => {
         if (!response) {
           throw new Error(response.status);
         }
         Loading.remove();
-
+        //  console.log(response.data.results);
+        // console.log(response.data);
         return response.data;
       });
     } catch (error) {
       console.error();
     }
   }
-
   // фільми, що шукають за назвою
   async getSearchFilms() {
-    // debugger;
     try {
-      const filterParams = getFilterQuery();
+      if (this.currentLang === 'en') {
+        this.lang = 'en';
+      } else if (this.currentLang === 'ua') {
+        this.lang = 'uk';
+      }
       Loading.pulse('Loading...', {
+        clickToClose: true,
+        svgColor: 'rgba(255, 107, 1, 0.6)',
         backgroundColor: 'rgba(0,0,0,0.8)',
       });
-      const url = `${BASE_URL}search/movie${api_key}${filterParams}&query=${this.searchQuery}&page=${this.page}`;
+      const url = `${BASE_URL}search/movie${api_key}&query=${this.searchQuery}&page=${this.page}&language=${this.lang}`;
       return await axios.get(url).then(response => {
         if (!response) {
           throw new Error(response.status);
@@ -65,49 +90,55 @@ class ApiService {
         return response.data;
       });
     } catch (error) {
-      console.error(error);
-      throw error;
+      console.error();
     }
   }
-  // !метод за яким віпрацьовує запит і пагінація при використанні фільтрів
-  async getMoviesForMainView() {
-    const { primary_release_year, with_genres, query } = getQueryAtributes();
-    if (query) {
-      // якщо є query незалежно від наявності genre, year
-      return this.getSearchFilms();
-    } else if (!query && (with_genres || primary_release_year)) {
-      // якщо немає query але є жанр або рік
-      return this.getRevenueFilms(true);
-    }
-    return this.getPopularFilms();
-  }
-
   // пошук фільму по id
   async getFilmById(id) {
     try {
-      const url = `${BASE_URL}movie/${id}${api_key}&append_to_response=images`;
+      if (this.currentLang === 'en') {
+        this.lang = 'en';
+      } else if (this.currentLang === 'ua') {
+        this.lang = 'uk';
+      }
+      Loading.pulse('Loading...', {
+        clickToClose: true,
+        svgColor: 'rgba(255, 107, 1, 0.6)',
+        backgroundColor: 'rgba(0,0,0,0.8)',
+      });
+      const url = `${BASE_URL}movie/${id}${api_key}&append_to_response=images&language=${this.lang}`;
       return await axios.get(url).then(response => {
         if (!response) {
           throw new Error(response.status);
         }
+        Loading.remove();
         return response.data;
       });
     } catch (error) {
       console.error();
     }
   }
-
   //  пошук фільму по масиву id з localStorage
-  async getFilmFromLocalStorage(arrWatchedFilms) {
-    Promise.all(
-      arrWatchedFilms.map(idWatchedFilm => {
+  async getFilmFromLocalStorage(arrayFilms) {
+    const data = await Promise.all(
+      arrayFilms.map(idWatchedFilm => {
         try {
-          const url = `${BASE_URL}movie/${idWatchedFilm}${api_key}&append_to_response=images`;
+          if (this.currentLang === 'en') {
+            this.lang = 'en';
+          } else if (this.currentLang === 'ua') {
+            this.lang = 'uk';
+          }
+          Loading.pulse('Loading...', {
+            clickToClose: true,
+            svgColor: 'rgba(255, 107, 1, 0.6)',
+            backgroundColor: 'rgba(0,0,0,0.8)',
+          });
+          const url = `${BASE_URL}movie/${idWatchedFilm}${api_key}&append_to_response=images&page=${this.page}&language=${this.lang}`;
           return axios.get(url).then(response => {
             if (!response) {
               throw new Error(response.status);
             }
-            console.log(response.data);
+            Loading.remove();
             return response.data;
           });
         } catch (error) {
@@ -115,6 +146,49 @@ class ApiService {
         }
       })
     );
+    return data;
+  }
+
+  // ! Для рендеру фільмів на library Watched
+  getArrWatchedId() {
+    let arrWatchedFilms = myLibrary.getFromWatched();
+    let filmsOnPage = [];
+    if (arrWatchedFilms !== null) {
+      refs.libraryEmpty.classList.add('is-hidden');
+      if (this.page === 1) {
+        filmsOnPage = arrWatchedFilms.slice(
+          2 * (this.page - 1),
+          this.amountOfPages * this.page
+        );
+      } else {
+        filmsOnPage = arrWatchedFilms.slice(
+          this.amountOfPages * (this.page - 1),
+          this.amountOfPages * this.page + 1
+        );
+      }
+    }
+    return filmsOnPage;
+  }
+
+  // ! Для рендеру фільмів на library Queue
+  getArrQueueId() {
+    let arrQueueFilms = myLibrary.getFromQueue();
+    let filmsOnPage = [];
+    if (arrQueueFilms !== null) {
+      refs.libraryEmpty.classList.add('is-hidden');
+      if (this.page === 1) {
+        filmsOnPage = arrQueueFilms.slice(
+          2 * (this.page - 1),
+          this.amountOfPages * this.page
+        );
+      } else {
+        filmsOnPage = arrQueueFilms.slice(
+          this.amountOfPages * (this.page - 1),
+          this.amountOfPages * this.page + 1
+        );
+      }
+    }
+    return filmsOnPage;
   }
 
   //  отримуємо символи для пошуку фільму
@@ -129,9 +203,6 @@ class ApiService {
     return this.page;
   }
   set pageNum(newPage) {
-    localStorage.setItem('page-value', newPage);
     this.page = newPage;
   }
 }
-
-export default new ApiService();

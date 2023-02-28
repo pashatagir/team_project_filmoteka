@@ -50,3 +50,5 @@ export function onTeamModal() {
   clickClose.addEventListener('click', teamModalClose);
   clickOverlay.addEventListener('click', teamModalClose);
 }
+
+

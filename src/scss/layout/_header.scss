@@ -15,7 +15,8 @@
     }
   }
   @include mq(desktop) {
-    background: url(../images/left-part.png), url(../images/right-part.png), #10181d;
+    background: url(../images/left-part.png), url(../images/right-part.png),
+      #10181d;
     background-position: left, right, center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -30,22 +31,37 @@
     background-size: cover;
     min-height: 230px;
     @include mq(retina) {
-      background-image: linear-gradient(rgba(0, 0, 0, 0.56), rgba(0, 0, 0, 0.56)),
+      background-image: linear-gradient(
+          rgba(0, 0, 0, 0.56),
+          rgba(0, 0, 0, 0.56)
+        ),
         url(../images/library-bg-mobile@2x.jpg);
     }
     @include mq(tablet) {
-      background-image: linear-gradient(rgba(0, 0, 0, 0.56), rgba(0, 0, 0, 0.56)),
+      background-image: linear-gradient(
+          rgba(0, 0, 0, 0.56),
+          rgba(0, 0, 0, 0.56)
+        ),
         url(../images/library-bg-tablet.jpg);
       @include mq(retina) {
-        background-image: linear-gradient(rgba(0, 0, 0, 0.56), rgba(0, 0, 0, 0.56)),
+        background-image: linear-gradient(
+            rgba(0, 0, 0, 0.56),
+            rgba(0, 0, 0, 0.56)
+          ),
           url(../images/library-bg-tablet@2x.jpg);
       }
     }
     @include mq(desktop) {
-      background-image: linear-gradient(rgba(0, 0, 0, 0.56), rgba(0, 0, 0, 0.56)),
+      background-image: linear-gradient(
+          rgba(0, 0, 0, 0.56),
+          rgba(0, 0, 0, 0.56)
+        ),
         url(../images/library-bg-desktop.jpg);
       @include mq(retina) {
-        background-image: linear-gradient(rgba(0, 0, 0, 0.56), rgba(0, 0, 0, 0.56)),
+        background-image: linear-gradient(
+            rgba(0, 0, 0, 0.56),
+            rgba(0, 0, 0, 0.56)
+          ),
           url(../images/library-bg-desktop@2x.jpg);
       }
     }
@@ -98,7 +114,8 @@
     gap: 8px;
     text-shadow: none;
     transform: scale(1);
-    transition: transform $transitionDuration $cubic, text-shadow $transitionDuration $cubic;
+    transition: transform $transitionDuration $cubic,
+      text-shadow $transitionDuration $cubic;
     outline: none;
 
     &:hover,
@@ -130,7 +147,8 @@
     text-shadow: none;
     outline: none;
     transform: scale(1);
-    transition: transform $transitionDuration $cubic, text-shadow $transitionDuration $cubic;
+    transition: transform $transitionDuration $cubic,
+      text-shadow $transitionDuration $cubic;
 
     &:hover,
     &:focus {
@@ -193,7 +211,8 @@
     color: $color-extra-text;
     outline: none;
     border-radius: 10px;
-    transition: text-shadow 500ms $cubic, border $transitionDuration $cubic,
+    transition: text-shadow $transitionDuration $cubic,
+      border $transitionDuration $cubic,
       background-color $transitionDuration $cubic;
     @include mq(tablet) {
       width: 50%;
@@ -219,6 +238,7 @@
     position: absolute;
     top: 11px;
     right: 10px;
+    transition: scale $transitionDuration $cubic;
     @include mq(tablet) {
       right: 185px;
     }
@@ -251,7 +271,8 @@
   transform: scale(1);
   outline: none;
   fill: $color-extra-text;
-  transition: transform $transitionDuration $cubic, background-color $transitionDuration $cubic,
+  transition: transform $transitionDuration $cubic,
+    background-color $transitionDuration $cubic,
     border-radius $transitionDuration $cubic;
 
   &:hover,
@@ -279,6 +300,7 @@
 
 .genres-container {
   position: absolute;
+  z-index: -1;
   display: flex;
   flex-direction: column;
   background-color: #10181d;
@@ -288,6 +310,7 @@
   left: -14px;
   border-bottom-right-radius: 5px;
   border-bottom-left-radius: 5px;
+  transition: display $transitionDuration $cubic;
   display: none;
 }
 
@@ -298,9 +321,11 @@
   background-color: #10181d;
   align-items: center;
   top: 33px;
-  left: 90px;
+  left: 80px;
+  padding: 5px 5px;
   border-bottom-right-radius: 5px;
   border-bottom-left-radius: 5px;
+  transition: display $transitionDuration $cubic;
   display: none;
 }
 
@@ -354,4 +379,14 @@
 .btn__modal--library {
   border-color: $color-extra-text;
   color: $color-extra-text;
+}
+
+.btn-active {
+  color: $color-extra-text;
+  text-shadow: 0 5px 10px $color-brand-text, 0 10px 15px $color-brand-text;
+  transform: scale(1.25);
+}
+
+.settings__button--light {
+  fill: #0000009c;
 }

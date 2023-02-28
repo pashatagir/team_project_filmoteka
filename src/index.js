@@ -5,24 +5,23 @@ import { ShowFilms } from './js/functionsForFilms';
 import { onTeamModal } from './js/team_modal';
 import { registrationModalOpen } from './js/modalRegistrationFunction';
 import { filmCardModalWindow } from './js/modal-film';
-// import { filmTrailerModalWindow } from './js/modal-trailer';
 import 'lazysizes';
 import 'lazysizes/plugins/parent-fit/ls.parent-fit';
 import { homeHeaderLinkBntLogic } from './js/headerBtnLinkLogic';
 import { authHandler } from './js/auth';
 import { onFirstLoadTheme } from './js/changeTheme';
-import { getChengeThemeByClick } from './js/changeTheme';
-// import {} from './js/language';
-import { authHandler } from './js/auth';
 
-// -------------------------header
-import * as menuFilters from './js/menuFilters'; /* тимчасово поки імпортую все*/
+import {} from './js/language';
+import { authHandler } from './js/auth';
+import './js/menuFilters'; /* тимчасово поки імпортую все*/
+
 registrationModalOpen();
 // логіка кнопок і посилань навігації хедера
 homeHeaderLinkBntLogic();
 //завантаження теми
+import { getChengeMainThemeByClick } from './js/changeTheme';
 onFirstLoadTheme();
-getChengeThemeByClick();
+getChengeMainThemeByClick();
 //авторизація
 authHandler();
 
@@ -37,12 +36,9 @@ filmCardModalWindow();
 scrolToTop();
 // форма з паролями
 showOrHidePasswordonClick();
-// модалка з трейлерами
-// renderTrailersBtns();
 
 //----------------------------footer
 onTeamModal();
-
-//надсилання в сховище фаєрбейз кожні 10 секунд
-/* import { giveLocalStorageToFirebaseStorage, deleteUserDataInFirebaseStorage } from './js/firebaseDatastorage';
-setInterval(giveLocalStorageToFirebaseStorage, 10000); */
+//робота зі сховищем фаєрбейз
+// import { firebaseRealtimeDatabase } from './js/firebaseDatastorage';
+// firebaseRealtimeDatabase();

@@ -1,4 +1,5 @@
-import { addEventListenerOnButtonaAddWatchedAndAddQueue } from './localStorage'
+import { addEventListenerOnButtonaAddWatchedAndAddQueue } from "./localStorageMovieManipulate";
+import { currentLang } from "./language";
 
 const refs = {
   imgEl: document.querySelector(".film-modal__img"),
@@ -19,19 +20,41 @@ let {
     genresEl,
   overviewEl } = refs;
 
-const unavailable = "Info unavailable";
 const empty = "";
 
 export function renderModalFilmCard(filmInfo) {
 
   const filmModalContent = document.querySelector('.film-modal__content');
+  let unavailable = "";
+  let posterAlt = "";
+  let modalError = "";
+
+  switch (currentLang) {
+    case "en":
+      unavailable = "Info unavaliable";
+      posterAlt = "Poster already on the way";
+      modalError = "We are sorry but we couldn't find detailed info about this movie.";
+      break;
+    
+    case "ua":
+      unavailable = "Інформація недоступна";
+      posterAlt = "Постер вже на шляху до вас"
+      modalError = "Вибачте, але ми не можемо знайти детальної інформації про цей фільм."
+      break;
+    
+    default:
+      unavailable = "Info unavaliable";
+      posterAlt = "Poster already on the way";
+      modalError = "We are sorry but we couldn't find detailed info about this movie.";
+  }
 
   if (!filmInfo) {
     filmModalContent.innerHTML =
-      "<p class='film-modal__error'>We are sorry but there is no detailed info about this movie.</p>";
+      `<p class='film-modal__error'>${modalError}</p>`;
     return;
   }
 
+  const imgPlaceholder = new URL('../images/poster_photo-400x600.webp', import.meta.url);
   const {
     id,
     poster_path,
@@ -41,6 +64,7 @@ export function renderModalFilmCard(filmInfo) {
     popularity,
     genres,
     overview,
+    title
   } = filmInfo;
 
   const filmGenres = genres
@@ -48,39 +72,24 @@ export function renderModalFilmCard(filmInfo) {
     .map(({ name }) => name)
     .join(', ');
 
-  if (poster_path === "originalnull") {
-    imgEl.src = "./images/poster_photo.png";
-    imgEl.alt = "poster already on the way";
-  };
-  imgEl.src = `https://image.tmdb.org/t/p/original${poster_path}`;
-  imgEl.alt = original_title;
+  poster_path === null
+    ? ((imgEl.src = imgPlaceholder)
+      && (imgEl.alt = posterAlt))
+    : ((imgEl.src = `https://image.tmdb.org/t/p/w500${poster_path}`)
+      && (imgEl.alt = title));
 
-  if (!original_title) {
-    titleBigEl.innerHTML = unavailable;
-    titleSmallEl.innerHTML = unavailable;
-  };
-  titleBigEl.innerHTML = original_title;
-  titleSmallEl.innerHTML = original_title;
+  genres.length === 0
+    ? (genresEl.innerHTML = unavailable)
+    : (genresEl.innerHTML = filmGenres);
 
-  if (!vote_average || !vote_count) {
-    votesEl.innerHTML = unavailable;
-  };
-  votesEl.innerHTML = `<span class="vote-average">${vote_average}</span>/<span class="vote-count">${vote_count}</span>`;
-
-  if (!popularity) {
-    popularityEl.innerHTML = unavailable;
-  };
+  overview === ""
+    ? (overviewEl.innerHTML = unavailable)
+    : (overviewEl.innerHTML = overview);
+  
+  titleBigEl.innerHTML = title;
+  titleSmallEl.innerHTML = original_title; 
   popularityEl.innerHTML = popularity;
-
-  if (genres === []) {
-    genresEl.innerHTML = unavailable;
-  };
-  genresEl.innerHTML = filmGenres;
-
-  if (overview === "") {
-    overviewEl.innerHTML = unavailable;
-  }
-  overviewEl.innerHTML = overview;
+  votesEl.innerHTML = `<span class="vote-average">${vote_average}</span>/<span class="vote-count">${vote_count}</span>`;
 
   filmModalContent.setAttribute('film-modal-id', id);
   addEventListenerOnButtonaAddWatchedAndAddQueue();
@@ -89,8 +98,8 @@ export function renderModalFilmCard(filmInfo) {
 export function clearModalFilmCard() {
   const filmModalContent = document.querySelector('.film-modal__content');
 
-  imgEl.src = "./images/poster_photo.png";
-  imgEl.alt = "poster already on the way";
+  imgEl.src = empty;
+  imgEl.alt = empty;
   titleBigEl.innerHTML = empty;
   votesEl.innerHTML = empty;
   popularityEl.innerHTML = empty;

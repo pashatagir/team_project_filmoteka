@@ -5,7 +5,7 @@ import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import { MyLibrary } from './localStorage';
 import { refs } from './refs';
 
-const KEY = '8d41be39d2696eeff12b89d916a6c984';
+const KEY = '7cc21d4cba3da7a5d2a2ac6813f90105';
 const api_key = `?api_key=${KEY}`;
 const BASE_URL = 'https://api.themoviedb.org/3/';
 

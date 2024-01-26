@@ -4,13 +4,12 @@ import { renderFilmCard } from './renderFunction';
 import { refs } from './refs';
 import { pagination } from './pagination';
 import ApiService from './fetchProdactsAPI';
-// import { resetQuery } from './searchFilms';
+
 const apiService = new ApiService();
-const KEY = '32432509d17cea42104bbb7507a382c7';
+const KEY = '7cc21d4cba3da7a5d2a2ac6813f90105';
 const api_key = `?api_key=${KEY}`;
 const BASE_URL = 'https://api.themoviedb.org/3';
 
-// !функця запису в локалсторедж
 const saveLocalStorage = (key, value) => {
   try {
     const serialized = JSON.stringify(value);
@@ -20,35 +19,7 @@ const saveLocalStorage = (key, value) => {
   }
 };
 
-// !функція вигрузки з локалсторедж значення за ключем
-const loadLocalStorage = key => {
-  try {
-    const serialized = localStorage.getItem(key);
-    return serialized === null ? undefined : JSON.parse(serialized);
-  } catch (error) {
-    console.error('Get error: ', error.message);
-  }
-};
-
-// !функція яка видаляє з локалсторедж
-const removeLocalStorage = key => {
-  try {
-    localStorage.removeItem(key);
-  } catch (error) {
-    console.error('Get error: ', error.message);
-  }
-};
-
-// !функція яка перетворює данні у валідний JSON
-function dataUpdate(data) {
-  localStorage.setItem('moviesData', JSON.stringify(data.results));
-}
-
 let page = localStorage.getItem('page-value');
-
-
-// !це мій файл, закоментовувати цей рядок не буду тут вилазила помилка
-
 let query = localStorage.getItem('query-value');
 let genre = localStorage.getItem('genre-value');
 let year = localStorage.getItem('year-value');

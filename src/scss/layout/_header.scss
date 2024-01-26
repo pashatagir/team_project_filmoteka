@@ -245,8 +245,7 @@
     @include mq(desktop) {
       right: 435px;
     }
-    &:hover,
-    &:focus {
+    &:hover {
       transform: scale(1.25);
     }
   }
@@ -335,9 +334,7 @@
 }
 
 .filter__item:first-of-type:hover .genres-container,
-.filter__item:first-of-type:focus .genres-container,
-.filter__item:nth-of-type(2):hover .years-container,
-.filter__item:nth-of-type(2):focus .years-container {
+.filter__item:nth-of-type(2):hover .years-container {
   display: flex;
 }
 

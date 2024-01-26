@@ -7,7 +7,6 @@ import ApiService from './fetchProdactsAPI';
 
 const apiService = new ApiService();
 const KEY = '7cc21d4cba3da7a5d2a2ac6813f90105';
-const api_key = `?api_key=${KEY}`;
 const BASE_URL = 'https://api.themoviedb.org/3';
 
 const saveLocalStorage = (key, value) => {
@@ -32,42 +31,27 @@ if (!refs.filterByGenre) {
   refs.resetButton.addEventListener('click', onSelectReset);
 }
 
-// !функція запиту при відпрацюванні по кліку фільтра
 export const getSearchByFilters = async (
   page = '',
   query = '',
   genre = '',
   year = ''
 ) => {
-  let f = {
+  const filters = {
     year: year !== '' ? `&primary_release_year=${year}` : '',
     genre: genre !== '' ? `&with_genres=${genre}` : '',
-    queryFetch: `&query=${query}`,
-    discover: `/trending`,
-    week: `/week`,
+    queryFetch: query !== '' ? `&query=${query}` : '',
+    discover: query === '' ? '/discover' : '/search',
+    week: query === '' || genre !== '' ? '' : '/week',
   };
-  if (query === '') {
-    f.queryFetch = '';
-  }
-  if (query !== '' && genre === '') {
-    f.discover = '/search';
-    f.week = '';
-  }
-  if (query === '' && genre !== '') {
-    f.discover = '/discover';
-    f.week = '';
-  }
-  if (query === '' && year !== '') {
-    f.discover = '/discover';
-    f.week = '';
-  }
-  let { data } = await axios.get(
-    `${BASE_URL}${f.discover}/movie${f.week}?api_key=${KEY}${f.genre}${f.year}&language=en-US${f.queryFetch}&page=${page}`
+
+  const { data } = await axios.get(
+    `${BASE_URL}${filters.discover}/movie${filters.week}?api_key=${KEY}${filters.genre}${filters.year}&language=en-US${filters.queryFetch}&page=${page}`
   );
-  saveLocalStorage('moviesData', data.results);
+
   return data;
 };
-// !фунція яка робить скидання фільтраціі і перезавантаження сторінки до поточного стану
+
 function onSelectReset(e) {
   Loading.pulse('Loading...', {
     backgroundColor: 'rgba(0,0,0,0.8)',
@@ -80,16 +64,14 @@ function onSelectReset(e) {
   localStorage.setItem('genre-value', genre);
   localStorage.setItem('year-value', year);
   localStorage.setItem('page-value', page);
-  localStorage.setItem('query-value', query);
-  getSearchByFilters(page, query, genre, year).then(data => {
+  apiService.getPopularFilms().then(data => {
     renderFilmCard(data);
-    // додаю пагінацію
     pagination.reset(data.total_results);
     Loading.remove();
   });
   saveLocalStorage('page-value', page);
 }
-// !функція фільтраціі за жанром
+
 function onSelectGenre(e) {
   if (e) {
     Loading.pulse('Loading...', {
@@ -101,13 +83,12 @@ function onSelectGenre(e) {
     localStorage.setItem('genre-value', genre);
     getSearchByFilters(page, query, genre, year).then(data => {
       renderFilmCard(data);
-      //додаю пагінацію
       pagination.reset(data.total_results);
       Loading.remove();
     });
   }
 }
-// !Функція фільтраціі за роком
+
 function onSelectYear(e) {
   Loading.pulse('Loading...', {
     backgroundColor: 'rgba(0,0,0,0.8)',
@@ -118,12 +99,11 @@ function onSelectYear(e) {
   localStorage.setItem('year-value', year);
   getSearchByFilters(page, query, genre, year).then(data => {
     renderFilmCard(data);
-    //додаю пагінацію
     pagination.reset(data.total_results);
     Loading.remove();
   });
 }
-// !функція яка повертає масив обєктів жанрів і записує іх в локалсторедж
+
 export const getMovieGenres = async () => {
   const { data } = await axios.get(
     `${BASE_URL}/genre/movie/list?api_key=${KEY}`
